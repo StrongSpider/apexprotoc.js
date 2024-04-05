@@ -33,7 +33,7 @@ export interface CustomMatch_LobbyPlayer {
 }
 
 export interface Datacenter {
-    timestamp: number | Long,
+    timestamp: number | BigInt64Array,
     category: string,
 
     name: string
@@ -54,10 +54,51 @@ export interface InventoryItem {
 }
 
 export interface LoadoutConfiguration {
-    weapons: [...InventoryItem],
-    equipment: [...InventoryItem]
+    weapons: InventoryItem[],
+    equipment: InventoryItem[]
 }
 
+export enum Events {
+    Init = "init",
+    CustomMatch_LobbyPlayers = "customMatch_LobbyPlayers",
+    ObserverSwitched = "observerSwitched",
+    ObserverAnnotation = "observerAnnotation",
+    MatchSetup = "matchSetup",
+    GameStateChanged = "gameStateChanged",
+    CharacterSelected = "characterSelected",
+    MatchStateEnd = "matchStateEnd",
+    RingStartClosing = "ringStartClosing",
+    RingFinishedClosing = "ringFinishedClosing",
+    PlayerConnected = "playerConnected",
+    PlayerDisconnected = "playerDisconnected",
+    PlayerStatChanged = "playerStatChanged",
+    PlayerUpgradeTierChanged = "playerUpgradeTierChanged",
+    PlayerDamaged = "playerDamaged",
+    PlayerKilled = "playerKilled",
+    PlayerDowned = "playerDowned",
+    PlayerAssist = "playerAssist",
+    SquadEliminated = "squadEliminated",
+    GibraltarShieldAbsorbed = "gibraltarShieldAbsorbed",
+    RevenantForgedShadowDamaged = "revenantForgedShadowDamaged",
+    PlayerRespawnTeam = "playerRespawnTeam",
+    PlayerRevive = "playerRevive",
+    ArenasItemSelected = "arenasItemSelected",
+    ArenasItemDeselected = "arenasItemDeselected",
+    InventoryPickUp = "inventoryPickUp",
+    InventoryDrop = "inventoryDrop",
+    InventoryUse = "inventoryUse",
+    BannerCollected = "bannerCollected",
+    PlayerAbilityUsed = "playerAbilityUsed",
+    LegendUpgradeSelected = "legendUpgradeSelected",
+    ZiplineUsed = "ziplineUsed",
+    GrenadeThrown = "grenadeThrown",
+    BlackMarketAction = "blackMarketAction",
+    WraithPortal = "wraithPortal",
+    WarpGateUsed = "warpGateUsed",
+    AmmoUsed = "ammoUsed",
+    WeaponSwitched = "weaponSwitched",
+    Response = "response"
+}
 
 export enum PlayerOfIntreset {
     UNSPECIFIED = 0,
@@ -76,7 +117,7 @@ export interface ServerEvents {
     connection: boolean,
     disconnect: boolean,
     init: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         gameVersion: string,
@@ -87,24 +128,24 @@ export interface ServerEvents {
     };
     customMatch_LobbyPlayers: {
         playerToken: string,
-        players: [...CustomMatch_LobbyPlayer]
+        players: CustomMatch_LobbyPlayer[]
     };
     observerSwitched: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         observer: Player,
         target: Player,
-        targetTeam: [...Player]
+        targetTeam: Player[]
     };
     observerAnnotation: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         annotationSerial: number
     };
     matchSetup: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         map: string,
@@ -118,26 +159,26 @@ export interface ServerEvents {
         startingLoadout: LoadoutConfiguration
     };
     gameStateChanged: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         state: string
     };
     characterSelected: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player
     };
     matchStateEnd: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         state: string,
-        winners: [...Player]
+        winners: Player[]
     };
     ringStartClosing: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         stage: number,
@@ -147,7 +188,7 @@ export interface ServerEvents {
         shrinkDuration: number
     };
     ringFinishedClosing: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         stage: number,
@@ -156,13 +197,13 @@ export interface ServerEvents {
         shrinkDuration: number
     };
     playerConnected: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player
     };
     playerDisconnected: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
@@ -170,7 +211,7 @@ export interface ServerEvents {
         isAlive: boolean
     };
     playerStatChanged: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
@@ -179,14 +220,14 @@ export interface ServerEvents {
         newValue: number
     };
     playerUpgradeTierChanged: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
         level: number
     };
     playerDamaged: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         attacker: Player,
@@ -195,7 +236,7 @@ export interface ServerEvents {
         damageInflicted: number
     };
     playerKilled: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         attacker: Player,
@@ -204,7 +245,7 @@ export interface ServerEvents {
         weapon: string
     };
     playerDowned: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         attacker: Player,
@@ -212,7 +253,7 @@ export interface ServerEvents {
         weapon: string
     };
     playerAssist: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         attacker: Player,
@@ -220,13 +261,13 @@ export interface ServerEvents {
         weapon: string
     };
     squadEliminated: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
-        players: [...Player]
+        players: Player[]
     };
     gibraltarShieldAbsorbed: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         attacker: Player,
@@ -234,7 +275,7 @@ export interface ServerEvents {
         damageInflicted: number
     };
     revenantForgedShadowDamaged: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         attacker: Player,
@@ -242,21 +283,21 @@ export interface ServerEvents {
         damageInflicted: number
     };
     playerRespawnTeam: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
         respawned: string
     };
     playerRevive: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
         revived: Player
     };
     arenasItemSelected: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
@@ -264,7 +305,7 @@ export interface ServerEvents {
         quantity: number
     };
     arenasItemDeselected: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
@@ -272,7 +313,7 @@ export interface ServerEvents {
         quantity: number
     };
     inventoryPickUp: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
@@ -280,16 +321,16 @@ export interface ServerEvents {
         quantity: number
     };
     inventoryDrop: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
         item: string,
         quantity: number,
-        extraData: [...string]
+        extraData: string[]
     };
     inventoryUse: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
@@ -297,21 +338,21 @@ export interface ServerEvents {
         quantity: number
     };
     bannerCollected: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
         collected: Player
     };
     playerAbilityUsed: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
         linkedEntity: string
     };
     legendUpgradeSelected: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
@@ -320,40 +361,40 @@ export interface ServerEvents {
         level: number
     };
     ziplineUsed: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
         linkedEntity: string
     };
     grenadeThrown: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
         linkedEntity: string
     };
     blackMarketAction: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
         item: string
     };
     wraithPortal: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
     };
     warpGateUsed: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
     };
     ammoUsed: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
@@ -363,7 +404,7 @@ export interface ServerEvents {
         newAmmoCount: number
     };
     weaponSwitched: {
-        timestamp: number | Long,
+        timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
