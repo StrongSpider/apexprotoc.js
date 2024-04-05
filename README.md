@@ -31,9 +31,12 @@ Server.on('gameStateChanged', (gameStateData) => {
 Server.once('connection', async () => {
     console.log('Server connected with Apex client!')
 
-    await Server.send('CustomMatch_CreateLobby', {})
+    Server.send('CustomMatch_CreateLobby', {})
+    await Server.once('response')
 
-    const LobbyPlayersData = await ApexServer.get('CustomMatch_GetLobbyPlayers')
+    // May need to yeild for lobby to load depending on your PC
+
+    const LobbyPlayersData = await Server.get('CustomMatch_GetLobbyPlayers')
     console.log(`Lobby code is: ${LobbyPlayersData.playerToken}`)
 });
 
