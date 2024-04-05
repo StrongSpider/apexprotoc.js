@@ -97,7 +97,10 @@ export enum Events {
     WarpGateUsed = "warpGateUsed",
     AmmoUsed = "ammoUsed",
     WeaponSwitched = "weaponSwitched",
-    Response = "response"
+    Response = "response",
+    Start = "start",
+    Connection = "connection",
+    Disconnect = "disconnect",
 }
 
 export enum PlayerOfIntreset {
@@ -463,6 +466,11 @@ export interface ServerRequests {
     }
 }
 
+export interface GetRequests {
+    CustomMatch_GetSettings: ServerRequests['CustomMatch_SetSettings']
+    CustomMatch_GetLobbyPlayers: ServerEvents['customMatch_LobbyPlayers']
+}
+
 export class Server {
     public constructor();
 
@@ -478,12 +486,16 @@ export class Server {
 
     public listen(port: number): void
 
-    public get isClosed():boolean
+    public get isClosed(): boolean
 
     public send<Type extends keyof ServerRequests>(
         type: Type,
         message: ServerRequests[Type]
     ): void
+
+    public get<Type extends keyof GetRequests>(
+        type: Type
+    ): Promise<GetRequests[Type]>;
 
     public destroy(): void
 }
