@@ -31,7 +31,7 @@ Server.on('gameStateChanged', (gameStateData) => {
 Server.once('connection', async () => {
     console.log('Server connected with Apex client!')
 
-    Server.send('CustomMatch_CreateLobby', {})
+    Server.send('CustomMatch_CreateLobby')
     await Server.once('response')
 
     // May need to yeild for lobby to load depending on your PC

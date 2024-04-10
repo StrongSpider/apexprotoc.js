@@ -101,18 +101,19 @@ export enum Events {
     Start = "start",
     Connection = "connection",
     Disconnect = "disconnect",
+    LiveAPIEvent = "liveAPIEvent"
 }
 
 export enum PlayerOfIntreset {
     UNSPECIFIED = 0,
 
-	NEXT = 1,
-	PREVIOUS = 2,
+    NEXT = 1,
+    PREVIOUS = 2,
 
-	KILL_LEADER = 3,
-	CLOSEST_ENEMY = 4,
-	CLOSEST_PLAYER = 5,
-	LATEST_ATTACKER = 6
+    KILL_LEADER = 3,
+    CLOSEST_ENEMY = 4,
+    CLOSEST_PLAYER = 5,
+    LATEST_ATTACKER = 6
 }
 
 export interface ServerEvents {
@@ -414,6 +415,7 @@ export interface ServerEvents {
         oldWeapon: string,
         newWeapon: string
     };
+    liveAPIEvent: any;
     response: {
         success: boolean,
         message: any | undefined
@@ -471,31 +473,88 @@ export interface GetRequests {
     CustomMatch_GetLobbyPlayers: ServerEvents['customMatch_LobbyPlayers']
 }
 
+/**
+ * Websocket Server from `apexprotoc.js`
+ * @example 
+ * const Server = new apexprotoc.Server(); 
+ */
 export class Server {
     public constructor();
 
+    /**
+     * Event listener for "ServerEvents" from the Apex Legends client
+     * @argument event Server event to listen for
+     * @argument listener Function called when server event fires
+     * @example 
+     * Server.on('gameStateChanged', (gameStateData) => {
+     *  console.log(gameStateData)
+     * })
+     */
     public on<Event extends keyof ServerEvents>(
         event: Event,
         listener: (data: ServerEvents[Event]) => void,
     ): void;
 
+    /**
+     * One time event listener for "ServerEvents" from the Apex Legends client
+     * @argument event Server event to listen for
+     * @argument listener Function called when server event fires (only called once)
+     * @returns Data from event
+     * @example 
+     * Server.once('connection', () => {
+     *  console.log("Client connected!")
+     * })
+     */
     public once<Event extends keyof ServerEvents>(
         event: Event,
         listener: (data: ServerEvents[Event]) => void,
-    ): Promise<ServerEvents[Event]>; 
+    ): Promise<ServerEvents[Event]>;
 
+    /**
+     * Sets up websocket server on a port and relays events back through the `Server` object
+     * @argument port The port entered in LiveAPI configerations `DEFAULT: 7777`
+     * @example 
+     * Server.listen(7777);
+     */
     public listen(port: number): void
 
+    /**
+     * Checks the websocket for an active connection with the Apex Client
+     * @returns True or False active connection
+     */
     public get isClosed(): boolean
 
+    /**
+     * Sends Request through websocket to serve to Apex client
+     * 
+     * NOTE: Apex client will send a 'responce' event in acknowledgement
+     * @argument type Server Request type
+     * @argument message Request message object
+     * @example 
+     * Server.send('CustomMatch_SendChat', { text: "glhf!" });
+     */
     public send<Type extends keyof ServerRequests>(
         type: Type,
-        message: ServerRequests[Type]
+        message?: ServerRequests[Type]
     ): void
 
+    /**
+     * Gets information from apex client
+     * 
+     * NOTE: If you use Server Request instead of Get Request you will return acknowledgement
+     * 
+     * **WARNING**: Will yeild until responce from Apex client 
+     * @argument type Get Request type
+     * @yields
+     * @example 
+     * const GetLobby = await Server.get('CustomMatch_GetLobbyPlayers');
+     */
     public get<Type extends keyof GetRequests>(
         type: Type
     ): Promise<GetRequests[Type]>;
 
+    /**
+     * Server destructor
+     */
     public destroy(): void
 }
