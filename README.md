@@ -6,7 +6,7 @@ A simple library for Apex Legends LiveAPI 2.0 using [protobufjs](https://www.npm
 
 # Install
 ```
-npm install @spiider./apexprotoc.js
+npm install "@spiider./apexprotoc.js"
 ```
 
 For this package to work, you need to enable LiveAPI for Apex Legends by configuring the game's launch options:
