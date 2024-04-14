@@ -1,3 +1,6 @@
+// Intermediary messages:
+// Not used directly, but as part of other messages
+
 export interface Vector3 {
     x: number,
     y: number,
@@ -58,6 +61,7 @@ export interface LoadoutConfiguration {
     equipment: InventoryItem[]
 }
 
+// Events that may be sent by client
 export enum Events {
     Init = "init",
     CustomMatch_LobbyPlayers = "customMatch_LobbyPlayers",
@@ -104,22 +108,32 @@ export enum Events {
     LiveAPIEvent = "liveAPIEvent"
 }
 
+// Enum used to quickly described the target of a ChangeCamera operation
 export enum PlayerOfIntreset {
     UNSPECIFIED = 0,
 
+    // Cycle through known Players in a team
     NEXT = 1,
     PREVIOUS = 2,
 
+    // Go to an interesting player
     KILL_LEADER = 3,
     CLOSEST_ENEMY = 4,
     CLOSEST_PLAYER = 5,
     LATEST_ATTACKER = 6
 }
 
+// Messages able to be emited
 export interface ServerEvents {
+    // Websocket util events
     start: boolean,
     connection: boolean,
     disconnect: boolean,
+
+    // Output messages:
+    // Game events that describe the ongoing state of the match
+    // Every message will have a timestamp and category 
+
     init: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -128,12 +142,17 @@ export interface ServerEvents {
         apiVersion: Version,
         platform: string,
 
+        // Named specified by `cl_liveapi_session_name`
         name: string
     };
+
     customMatch_LobbyPlayers: {
         playerToken: string,
         players: CustomMatch_LobbyPlayer[]
     };
+
+    // Observer Events
+
     observerSwitched: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -142,12 +161,16 @@ export interface ServerEvents {
         target: Player,
         targetTeam: Player[]
     };
+
     observerAnnotation: {
         timestamp: number | BigInt64Array,
         category: string,
 
         annotationSerial: number
     };
+
+    // Match Information
+
     matchSetup: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -162,18 +185,21 @@ export interface ServerEvents {
 
         startingLoadout: LoadoutConfiguration
     };
+
     gameStateChanged: {
         timestamp: number | BigInt64Array,
         category: string,
 
         state: string
     };
+
     characterSelected: {
         timestamp: number | BigInt64Array,
         category: string,
 
         player: Player
     };
+
     matchStateEnd: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -181,6 +207,7 @@ export interface ServerEvents {
         state: string,
         winners: Player[]
     };
+
     ringStartClosing: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -191,6 +218,7 @@ export interface ServerEvents {
         endRadius: number,
         shrinkDuration: number
     };
+
     ringFinishedClosing: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -200,12 +228,14 @@ export interface ServerEvents {
         currentRadius: number,
         shrinkDuration: number
     };
+
     playerConnected: {
         timestamp: number | BigInt64Array,
         category: string,
 
         player: Player
     };
+
     playerDisconnected: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -214,6 +244,7 @@ export interface ServerEvents {
         canReconnect: boolean,
         isAlive: boolean
     };
+
     playerStatChanged: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -223,6 +254,7 @@ export interface ServerEvents {
         statName: string,
         newValue: number
     };
+
     playerUpgradeTierChanged: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -230,6 +262,9 @@ export interface ServerEvents {
         player: Player,
         level: number
     };
+
+    // Combat events
+
     playerDamaged: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -239,6 +274,7 @@ export interface ServerEvents {
         weapon: string,
         damageInflicted: number
     };
+
     playerKilled: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -248,6 +284,7 @@ export interface ServerEvents {
         awardedTo: Player,
         weapon: string
     };
+
     playerDowned: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -256,6 +293,7 @@ export interface ServerEvents {
         victim: Player,
         weapon: string
     };
+
     playerAssist: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -264,12 +302,14 @@ export interface ServerEvents {
         victim: Player,
         weapon: string
     };
+
     squadEliminated: {
         timestamp: number | BigInt64Array,
         category: string,
 
         players: Player[]
     };
+
     gibraltarShieldAbsorbed: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -278,6 +318,7 @@ export interface ServerEvents {
         victim: Player,
         damageInflicted: number
     };
+
     revenantForgedShadowDamaged: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -286,6 +327,9 @@ export interface ServerEvents {
         victim: Player,
         damageInflicted: number
     };
+
+    // Interaction events
+
     playerRespawnTeam: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -293,6 +337,7 @@ export interface ServerEvents {
         player: Player,
         respawned: string
     };
+
     playerRevive: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -300,6 +345,7 @@ export interface ServerEvents {
         player: Player,
         revived: Player
     };
+
     arenasItemSelected: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -308,6 +354,7 @@ export interface ServerEvents {
         item: string,
         quantity: number
     };
+
     arenasItemDeselected: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -316,6 +363,7 @@ export interface ServerEvents {
         item: string,
         quantity: number
     };
+
     inventoryPickUp: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -324,6 +372,7 @@ export interface ServerEvents {
         item: string,
         quantity: number
     };
+
     inventoryDrop: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -333,6 +382,7 @@ export interface ServerEvents {
         quantity: number,
         extraData: string[]
     };
+
     inventoryUse: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -341,6 +391,7 @@ export interface ServerEvents {
         item: string,
         quantity: number
     };
+
     bannerCollected: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -348,6 +399,7 @@ export interface ServerEvents {
         player: Player,
         collected: Player
     };
+
     playerAbilityUsed: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -355,6 +407,7 @@ export interface ServerEvents {
         player: Player,
         linkedEntity: string
     };
+
     legendUpgradeSelected: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -364,6 +417,7 @@ export interface ServerEvents {
         upgradeDesc: string,
         level: number
     };
+
     ziplineUsed: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -371,6 +425,7 @@ export interface ServerEvents {
         player: Player,
         linkedEntity: string
     };
+
     grenadeThrown: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -378,6 +433,7 @@ export interface ServerEvents {
         player: Player,
         linkedEntity: string
     };
+
     blackMarketAction: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -385,18 +441,21 @@ export interface ServerEvents {
         player: Player,
         item: string
     };
+
     wraithPortal: {
         timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
     };
+
     warpGateUsed: {
         timestamp: number | BigInt64Array,
         category: string,
 
         player: Player,
     };
+
     ammoUsed: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -407,6 +466,7 @@ export interface ServerEvents {
         oldAmmoCount: number,
         newAmmoCount: number
     };
+
     weaponSwitched: {
         timestamp: number | BigInt64Array,
         category: string,
@@ -415,15 +475,23 @@ export interface ServerEvents {
         oldWeapon: string,
         newWeapon: string
     };
+
+    // Encoded events
+
     liveAPIEvent: any;
+
     response: {
         success: boolean,
         message: any | undefined
     };
 }
 
+// Input messages:
+// Used by observers to programmatically interact with the game
 export interface ServerRequests {
     ChangeCamera: {
+        // If POI: Set the camera to an interesting player (e.g. the Kill Leader)
+        // If Name: Change camera to a player by name
         target: PlayerOfIntreset | string
     },
     PauseToggle: {
@@ -468,6 +536,7 @@ export interface ServerRequests {
     }
 }
 
+// Requests with message responses
 export interface GetRequests {
     CustomMatch_GetSettings: ServerRequests['CustomMatch_SetSettings']
     CustomMatch_GetLobbyPlayers: ServerEvents['customMatch_LobbyPlayers']
@@ -527,7 +596,7 @@ export class Server {
     /**
      * Sends Request through websocket to serve to Apex client
      * 
-     * NOTE: Apex client will send a 'responce' event in acknowledgement
+     * NOTE: Apex client will send a 'response' event in acknowledgement
      * @argument type Server Request type
      * @argument message Request message object
      * @example 

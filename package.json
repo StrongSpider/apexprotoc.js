@@ -1,6 +1,6 @@
 {
-  "name": "@spiider./apexprotoc.js",
-  "version": "0.1.01",
+  "name": "apexprotoc.js",
+  "version": "0.1.2",
   "description": "A javascript library to run Apex Legends LiveAPI 2.0",
   "main": "./lib/index.js",
   "types": "./typings/index.d.ts",
@@ -11,18 +11,17 @@
   "directories": {
     "lib": "lib"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "spiider.",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "protobufjs": "~7.2.6",
-    "protobufjs-cli": "~1.1.2",
     "ws": "^8.16.0"
   },
+  "homepage": "https://github.com/StrongSpider/apexprotoc.js",
   "keywords": [
+    "ApexLegendsAPI",
     "Apex Legends",
+    "ApexLegends",
     "LiveAPI",
     "protoc"
   ]
