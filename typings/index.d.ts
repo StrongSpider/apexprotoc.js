@@ -43,9 +43,9 @@ export interface Datacenter {
 }
 
 export interface Version {
-    major_num: number,
-    minor_num: number,
-    build_stamp: number,
+    majorNum: number,
+    minorNum: number,
+    buildStamp: number,
     revision: string
 }
 
@@ -62,7 +62,7 @@ export interface LoadoutConfiguration {
 }
 
 // Events that may be sent by client
-export enum Events {
+export const enum Events {
     Init = "init",
     CustomMatch_LobbyPlayers = "customMatch_LobbyPlayers",
     ObserverSwitched = "observerSwitched",
@@ -109,7 +109,7 @@ export enum Events {
 }
 
 // Enum used to quickly described the target of a ChangeCamera operation
-export enum PlayerOfIntreset {
+export const enum PlayerOfIntreset {
     UNSPECIFIED = 0,
 
     // Cycle through known Players in a team
